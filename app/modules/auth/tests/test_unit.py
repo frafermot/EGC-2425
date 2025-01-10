@@ -117,3 +117,18 @@ def test_service_create_with_profile_fail_no_password(clean_database):
 
     assert UserRepository().count() == 0
     assert UserProfileRepository().count() == 0
+
+def test_conteo_usuarios(clean_database):
+    usuarios_previos = UserRepository.count()
+    perfil_previos = UserProfileRepository.count()
+    data = {
+        "name": "Test",
+        "surname": "Foo",
+        "email": "service_test@example.com",
+        "password": "test1234"
+    }
+
+    AuthenticationService().create_with_profile(**data)
+
+    assert UserRepository().count() == usuarios_previos+1
+    assert UserProfileRepository().count() == perfil_previos+1
